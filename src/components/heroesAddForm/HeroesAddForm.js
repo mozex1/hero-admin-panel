@@ -1,17 +1,11 @@
-import { useHttp } from '../../hooks/http.hook';
-import { useDispatch } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { v4 as uuidv4 } from 'uuid';
-import './HeroesAddForm.scss';
-import { heroCreated } from '../heroesList/heroesSlice';
 import { useCreateHeroMutation } from '../../api/apiSlice';
+import './HeroesAddForm.scss';
 
 const HeroesAddForm = () => {
-    const dispatch = useDispatch();
-    const { request } = useHttp();
-
-    const [ createHero, {isLoading} ] = useCreateHeroMutation();
+    const [ createHero ] = useCreateHeroMutation();
 
     return (
         <Formik 

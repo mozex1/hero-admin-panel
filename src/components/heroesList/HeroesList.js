@@ -1,8 +1,6 @@
-import { useHttp } from '../../hooks/http.hook';
-import { useEffect, useCallback, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useCallback, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 
-import { heroDeleted, fetchHeroes } from './heroesSlice';
 import { useGetHeroesQuery, useDeleteHeroMutation } from '../../api/apiSlice';
 import { CSSTransition, TransitionGroup} from 'react-transition-group';
 import HeroesListItem from "../heroesListItem/HeroesListItem";
@@ -22,36 +20,21 @@ const HeroesList = () => {
     const activeFilter = useSelector(state => state.filters.activeFilter);
     const filteredHeroes = useMemo(() => {
         const filteredHeroes = heroes.slice();
-         
+            
         if (activeFilter === 'all') return filteredHeroes;
         else return filteredHeroes.filter(item => item.element === activeFilter)
     }, [heroes, activeFilter]);
 
-    // const filteredHeroes = useSelector(filteredHeroesSelector);
-    // const heroesLoadingStatus = useSelector(state => state.heroes.heroesLoadingStatus);
+    const onDelete = useCallback((id) => {
+            deleteHero(id)
+            // eslint-disable-next-line  
+        }, []);
 
-    const dispatch = useDispatch();
-    const { request } = useHttp();
-
-    useEffect(() => {
-        dispatch(fetchHeroes());
-        // eslint-disable-next-line
-    }, []);
-
-const onDelete = useCallback((id) => {
-        deleteHero(id)
-        // request(`http://localhost:3001/heroes/${id}`, "DELETE")
-        //     .then(data => console.log(data, 'Deleted'))
-        //     .then(dispatch(heroDeleted(id)))
-        //     .catch(err => console.log(err));
-        // eslint-disable-next-line  
-    }, [request]);
-
-    if (isLoading) {
-        return <Spinner/>;
-    } else if (isError) {
-        return <h5 className="text-center mt-5">Ошибка загрузки</h5>
-    }
+        if (isLoading) {
+            return <Spinner/>;
+        } else if (isError) {
+            return <h5 className="text-center mt-5">Ошибка загрузки</h5>
+        }
 
     const renderHeroesList = (arr) => {
         if (arr.length === 0) {
@@ -85,6 +68,9 @@ const onDelete = useCallback((id) => {
 }
 
 export default HeroesList;
+
+// const filteredHeroes = useSelector(filteredHeroesSelector);
+// const heroesLoadingStatus = useSelector(state => state.heroes.heroesLoadingStatus);
 
 // const filteredHeroes = useSelector(state => {
 //     if (state.filters.activeFilter === 'all') return state.heroes.heroes;
