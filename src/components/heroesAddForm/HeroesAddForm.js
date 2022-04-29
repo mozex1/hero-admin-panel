@@ -5,10 +5,13 @@ import * as Yup from 'yup';
 import { v4 as uuidv4 } from 'uuid';
 import './HeroesAddForm.scss';
 import { heroCreated } from '../heroesList/heroesSlice';
+import { useCreateHeroMutation } from '../../api/apiSlice';
 
 const HeroesAddForm = () => {
     const dispatch = useDispatch();
     const { request } = useHttp();
+
+    const [ createHero, {isLoading} ] = useCreateHeroMutation();
 
     return (
         <Formik 
@@ -24,10 +27,11 @@ const HeroesAddForm = () => {
             element: Yup.string().required('Обязательное поле'),
         })}
         onSubmit = {(newHero, {resetForm}) => {
-            request("http://localhost:3001/heroes", "POST", JSON.stringify(newHero))
-            .then(res => console.log(res, 'Отправка успешна'))
-            .then(dispatch(heroCreated(newHero)))
-            .catch(err => console.log(err));
+            // request("http://localhost:3001/heroes", "POST", JSON.stringify(newHero))
+            // .then(res => console.log(res, 'Отправка успешна'))
+            // .then(dispatch(heroCreated(newHero)))
+            // .catch(err => console.log(err));
+            createHero(newHero).unwrap();
             resetForm();
         }}
         >
