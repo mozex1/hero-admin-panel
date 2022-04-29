@@ -1,6 +1,7 @@
 import HeroesList from '../heroesList/HeroesList';
 import HeroesAddForm from '../heroesAddForm/HeroesAddForm';
 import HeroesFilters from '../heroesFilters/HeroesFilters';
+import ErrorBoundary from '../errorBoundary/ErrorBoundary';
 
 import './app.scss';
 
@@ -9,10 +10,16 @@ const App = () => {
     return (
         <main className="app">
             <div className="content">
-                <HeroesList/>
+                <ErrorBoundary>
+                    <HeroesList/>
+                </ErrorBoundary>
                 <div className="content__interactive">
-                    <HeroesAddForm/>
-                    <HeroesFilters/>
+                    <ErrorBoundary>
+                        <HeroesAddForm/>
+                    </ErrorBoundary>
+                    <ErrorBoundary>
+                        <HeroesFilters/>
+                    </ErrorBoundary>
                 </div>
             </div>
         </main>
